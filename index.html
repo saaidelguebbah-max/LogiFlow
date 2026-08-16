@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LogiFlow - إدارة اللوجيستيك</title>
+<title>LogiFlow V2</title>
 
 <style>
 *{box-sizing:border-box}
@@ -11,121 +11,108 @@ body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#f4f6f8;
-  color:#222;
+  color:#222
 }
 header{
   background:#0d6efd;
   color:white;
-  padding:20px;
   text-align:center;
+  padding:20px
 }
-header h1{margin:0;font-size:28px}
+header h1{margin:0}
 .container{
   max-width:1000px;
   margin:auto;
-  padding:15px;
+  padding:15px
 }
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
-  margin-bottom:15px;
+  margin-bottom:15px
 }
 .stat{
   background:white;
   padding:15px;
-  border-radius:12px;
   text-align:center;
-  box-shadow:0 2px 8px #ddd;
+  border-radius:12px;
+  box-shadow:0 2px 8px #ddd
 }
 .stat strong{
   display:block;
-  font-size:25px;
   color:#0d6efd;
-  margin-top:5px;
+  font-size:25px;
+  margin-top:5px
 }
-.menu{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-bottom:15px;
-}
-.menu button{
-  border:none;
-  padding:13px 5px;
-  border-radius:10px;
-  background:white;
-  font-size:15px;
-  box-shadow:0 2px 7px #ddd;
-  cursor:pointer;
-}
-.menu button.active{
-  background:#0d6efd;
-  color:white;
-}
-.section{
-  display:none;
+.card{
   background:white;
   padding:18px;
   border-radius:15px;
-  box-shadow:0 2px 8px #ddd;
+  box-shadow:0 2px 8px #ddd
 }
-.section.active{display:block}
-h2{
-  color:#0d6efd;
-  margin-top:0;
-}
-input,select{
+input{
   width:100%;
   padding:12px;
   margin:6px 0;
   border:1px solid #ddd;
   border-radius:8px;
-  font-size:15px;
+  font-size:15px
 }
-button.primary{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border:none;
+button{
+  border:0;
   border-radius:8px;
+  padding:10px 13px;
+  cursor:pointer;
+  font-size:14px
+}
+.primary{
+  width:100%;
   background:#0d6efd;
   color:white;
-  font-size:16px;
+  margin-top:8px
 }
-button.delete{
-  background:#dc3545;
-  color:white;
-  border:none;
-  padding:7px 10px;
-  border-radius:7px;
-}
-.item{
-  border:1px solid #eee;
-  padding:12px;
-  border-radius:10px;
-  margin-top:10px;
+.product{
   background:#fafafa;
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:14px;
+  margin-top:12px
 }
+.product.low{
+  border:2px solid #dc3545;
+  background:#fff5f5
+}
+.actions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-top:10px
+}
+.in{background:#198754;color:white}
+.out{background:#fd7e14;color:white}
+.edit{background:#ffc107}
+.del{background:#dc3545;color:white}
 .badge{
   display:inline-block;
   padding:5px 9px;
   border-radius:20px;
   background:#e7f1ff;
   color:#0d6efd;
-  font-size:13px;
+  margin-top:5px
+}
+.warning{
+  color:#dc3545;
+  font-weight:bold;
+  margin-top:8px
 }
 .empty{
   text-align:center;
   color:#777;
-  padding:20px;
+  padding:20px
 }
-.search{
-  margin-bottom:10px;
-}
-@media(max-width:700px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .menu{grid-template-columns:repeat(2,1fr)}
+@media(max-width:600px){
+  .stats{grid-template-columns:1fr 1fr}
+  .actions{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -133,302 +120,293 @@ button.delete{
 <body>
 
 <header>
-  <h1>🚚 LogiFlow</h1>
-  <p>نظام إدارة اللوجيستيك</p>
+<h1>🚚 LogiFlow</h1>
+<p>إدارة اللوجيستيك والمخزون</p>
 </header>
 
 <div class="container">
 
 <div class="stats">
-  <div class="stat">📦 المنتجات<strong id="stockCount">0</strong></div>
-  <div class="stat">🚛 الشاحنات<strong id="truckCount">0</strong></div>
-  <div class="stat">📋 الطلبات<strong id="orderCount">0</strong></div>
-  <div class="stat">🚚 قيد التوصيل<strong id="deliveryCount">0</strong></div>
+<div class="stat">
+📦 المنتجات
+<strong id="productCount">0</strong>
 </div>
 
-<div class="menu">
-  <button class="active" onclick="showSection('stock',this)">📦 المخزون</button>
-  <button onclick="showSection('trucks',this)">🚛 النقل</button>
-  <button onclick="showSection('orders',this)">📋 الطلبات</button>
-  <button onclick="showSection('tracking',this)">📍 التتبع</button>
+<div class="stat">
+📊 مجموع الكمية
+<strong id="totalQty">0</strong>
 </div>
 
-<!-- المخزون -->
-<div id="stock" class="section active">
+<div class="stat">
+⚠️ مخزون منخفض
+<strong id="lowCount">0</strong>
+</div>
+</div>
+
+<div class="card">
+
 <h2>📦 إدارة المخزون</h2>
 
 <input id="productName" placeholder="اسم المنتج">
-<input id="productQty" type="number" placeholder="الكمية">
+<input id="productQty" type="number" min="1" placeholder="الكمية">
 
-<button class="primary" onclick="addProduct()">➕ إضافة المنتج</button>
+<button class="primary" onclick="addProduct()">
+➕ إضافة منتج جديد
+</button>
 
-<input class="search" id="stockSearch" placeholder="🔎 البحث عن منتج" oninput="renderStock()">
+<input
+id="search"
+placeholder="🔎 البحث عن منتج"
+oninput="renderProducts()"
+>
 
-<div id="stockList"></div>
-</div>
+<div id="productList"></div>
 
-<!-- النقل -->
-<div id="trucks" class="section">
-<h2>🚛 إدارة النقل</h2>
-
-<input id="truckNumber" placeholder="رقم الشاحنة">
-<input id="driverName" placeholder="اسم السائق">
-
-<button class="primary" onclick="addTruck()">➕ إضافة الشاحنة</button>
-
-<div id="truckList"></div>
-</div>
-
-<!-- الطلبات -->
-<div id="orders" class="section">
-<h2>📋 إدارة الطلبات</h2>
-
-<input id="customerName" placeholder="اسم الزبون">
-<input id="orderProduct" placeholder="المنتج">
-<input id="orderQty" type="number" placeholder="الكمية">
-
-<button class="primary" onclick="addOrder()">➕ إنشاء الطلب</button>
-
-<div id="orderList"></div>
-</div>
-
-<!-- التتبع -->
-<div id="tracking" class="section">
-<h2>📍 تتبع الطلبات</h2>
-<div id="trackingList"></div>
 </div>
 
 </div>
 
 <script>
 
-let products=JSON.parse(localStorage.getItem("products")||"[]");
-let trucks=JSON.parse(localStorage.getItem("trucks")||"[]");
-let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+let products =
+JSON.parse(localStorage.getItem("logiflow_products") || "[]");
 
 function save(){
-  localStorage.setItem("products",JSON.stringify(products));
-  localStorage.setItem("trucks",JSON.stringify(trucks));
-  localStorage.setItem("orders",JSON.stringify(orders));
-  updateStats();
-}
-
-function showSection(id,btn){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
-
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-
-  if(id==="stock") renderStock();
-  if(id==="trucks") renderTrucks();
-  if(id==="orders") renderOrders();
-  if(id==="tracking") renderTracking();
+localStorage.setItem(
+"logiflow_products",
+JSON.stringify(products)
+);
+updateStats();
 }
 
 function updateStats(){
-  document.getElementById("stockCount").textContent=products.length;
-  document.getElementById("truckCount").textContent=trucks.length;
-  document.getElementById("orderCount").textContent=orders.length;
 
-  let active=orders.filter(o=>o.status!=="تم التسليم").length;
-  document.getElementById("deliveryCount").textContent=active;
+document.getElementById("productCount").textContent =
+products.length;
+
+let total =
+products.reduce((sum,p)=>sum + Number(p.qty),0);
+
+document.getElementById("totalQty").textContent =
+total;
+
+let low =
+products.filter(p=>Number(p.qty)<10).length;
+
+document.getElementById("lowCount").textContent =
+low;
 }
 
 function addProduct(){
-  let name=document.getElementById("productName").value.trim();
-  let qty=document.getElementById("productQty").value;
 
-  if(!name||!qty){
-    alert("دخل اسم المنتج والكمية");
-    return;
-  }
+let name =
+document.getElementById("productName").value.trim();
 
-  products.push({
-    id:Date.now(),
-    name:name,
-    qty:Number(qty)
-  });
+let qty =
+Number(document.getElementById("productQty").value);
 
-  document.getElementById("productName").value="";
-  document.getElementById("productQty").value="";
-
-  save();
-  renderStock();
+if(!name || qty<=0){
+alert("دخل اسم المنتج والكمية");
+return;
 }
 
-function renderStock(){
-  let list=document.getElementById("stockList");
-  let search=(document.getElementById("stockSearch")?.value||"").toLowerCase();
+let product = {
 
-  let filtered=products.filter(p=>p.name.toLowerCase().includes(search));
+id:Date.now(),
 
-  if(filtered.length===0){
-    list.innerHTML='<div class="empty">لا توجد منتجات</div>';
-    return;
-  }
+code:"P-"+Date.now().toString().slice(-6),
 
-  list.innerHTML=filtered.map(p=>`
-    <div class="item">
-      <b>📦 ${p.name}</b><br>
-      الكمية: <span class="badge">${p.qty}</span>
-      <br>
-      <button class="delete" onclick="deleteProduct(${p.id})">حذف</button>
-    </div>
-  `).join("");
+name:name,
+
+qty:qty
+
+};
+
+products.push(product);
+
+document.getElementById("productName").value="";
+document.getElementById("productQty").value="";
+
+save();
+renderProducts();
+
+alert("تمت إضافة المنتج بنجاح ✅");
+}
+
+function renderProducts(){
+
+let list =
+document.getElementById("productList");
+
+let search =
+document.getElementById("search").value
+.toLowerCase();
+
+let filtered =
+products.filter(p=>
+p.name.toLowerCase().includes(search)
+);
+
+if(filtered.length===0){
+
+list.innerHTML =
+'<div class="empty">لا توجد منتجات</div>';
+
+return;
+}
+
+list.innerHTML =
+filtered.map(p=>{
+
+let low =
+Number(p.qty)<10;
+
+return `
+
+<div class="product ${low ? "low":""}">
+
+<b>📦 ${p.name}</b>
+
+<br>
+
+الكود:
+<span class="badge">
+${p.code}
+</span>
+
+<br>
+
+الكمية الحالية:
+<strong>${p.qty}</strong>
+
+${low ? `
+<div class="warning">
+⚠️ تنبيه: المخزون منخفض
+</div>
+`:""}
+
+<div class="actions">
+
+<button class="in"
+onclick="stockIn(${p.id})">
+➕ دخول
+</button>
+
+<button class="out"
+onclick="stockOut(${p.id})">
+➖ خروج
+</button>
+
+<button class="edit"
+onclick="editProduct(${p.id})">
+✏️ تعديل
+</button>
+
+<button class="del"
+onclick="deleteProduct(${p.id})">
+🗑️ حذف
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+function stockIn(id){
+
+let product =
+products.find(p=>p.id===id);
+
+let amount =
+Number(prompt("شحال من وحدة دخلات للمخزون؟"));
+
+if(!amount || amount<=0){
+return;
+}
+
+product.qty += amount;
+
+save();
+renderProducts();
+}
+
+function stockOut(id){
+
+let product =
+products.find(p=>p.id===id);
+
+let amount =
+Number(prompt("شحال من وحدة خرجات من المخزون؟"));
+
+if(!amount || amount<=0){
+return;
+}
+
+if(amount > product.qty){
+
+alert("❌ الكمية غير كافية في المخزون");
+
+return;
+}
+
+product.qty -= amount;
+
+save();
+renderProducts();
+}
+
+function editProduct(id){
+
+let product =
+products.find(p=>p.id===id);
+
+let newName =
+prompt("اسم المنتج:",product.name);
+
+if(newName===null || !newName.trim()){
+return;
+}
+
+let newQty =
+Number(prompt("الكمية:",product.qty));
+
+if(isNaN(newQty) || newQty<0){
+alert("الكمية غير صحيحة");
+return;
+}
+
+product.name =
+newName.trim();
+
+product.qty =
+newQty;
+
+save();
+renderProducts();
 }
 
 function deleteProduct(id){
-  if(confirm("هل تريد حذف هذا المنتج؟")){
-    products=products.filter(p=>p.id!==id);
-    save();
-    renderStock();
-  }
+
+if(!confirm("واش متأكد بغيتي تحذف هاد المنتج؟")){
+return;
 }
 
-function addTruck(){
-  let number=document.getElementById("truckNumber").value.trim();
-  let driver=document.getElementById("driverName").value.trim();
+products =
+products.filter(p=>p.id!==id);
 
-  if(!number||!driver){
-    alert("دخل رقم الشاحنة واسم السائق");
-    return;
-  }
-
-  trucks.push({
-    id:Date.now(),
-    number:number,
-    driver:driver
-  });
-
-  document.getElementById("truckNumber").value="";
-  document.getElementById("driverName").value="";
-
-  save();
-  renderTrucks();
+save();
+renderProducts();
 }
 
-function renderTrucks(){
-  let list=document.getElementById("truckList");
-
-  if(trucks.length===0){
-    list.innerHTML='<div class="empty">لا توجد شاحنات</div>';
-    return;
-  }
-
-  list.innerHTML=trucks.map(t=>`
-    <div class="item">
-      <b>🚛 ${t.number}</b><br>
-      السائق: ${t.driver}
-      <br>
-      <button class="delete" onclick="deleteTruck(${t.id})">حذف</button>
-    </div>
-  `).join("");
-}
-
-function deleteTruck(id){
-  if(confirm("هل تريد حذف هذه الشاحنة؟")){
-    trucks=trucks.filter(t=>t.id!==id);
-    save();
-    renderTrucks();
-  }
-}
-
-function addOrder(){
-  let customer=document.getElementById("customerName").value.trim();
-  let product=document.getElementById("orderProduct").value.trim();
-  let qty=document.getElementById("orderQty").value;
-
-  if(!customer||!product||!qty){
-    alert("دخل جميع معلومات الطلب");
-    return;
-  }
-
-  orders.push({
-    id:Date.now(),
-    customer:customer,
-    product:product,
-    qty:Number(qty),
-    status:"جديد"
-  });
-
-  document.getElementById("customerName").value="";
-  document.getElementById("orderProduct").value="";
-  document.getElementById("orderQty").value="";
-
-  save();
-  renderOrders();
-}
-
-function renderOrders(){
-  let list=document.getElementById("orderList");
-
-  if(orders.length===0){
-    list.innerHTML='<div class="empty">لا توجد طلبات</div>';
-    return;
-  }
-
-  list.innerHTML=orders.map(o=>`
-    <div class="item">
-      <b>📋 طلب #${o.id}</b><br>
-      الزبون: ${o.customer}<br>
-      المنتج: ${o.product}<br>
-      الكمية: ${o.qty}<br>
-      الحالة:
-      <select onchange="changeStatus(${o.id},this.value)">
-        <option ${o.status==="جديد"?"selected":""}>جديد</option>
-        <option ${o.status==="قيد التحضير"?"selected":""}>قيد التحضير</option>
-        <option ${o.status==="قيد التوصيل"?"selected":""}>قيد التوصيل</option>
-        <option ${o.status==="تم التسليم"?"selected":""}>تم التسليم</option>
-      </select>
-      <button class="delete" onclick="deleteOrder(${o.id})">حذف</button>
-    </div>
-  `).join("");
-}
-
-function changeStatus(id,status){
-  let order=orders.find(o=>o.id===id);
-  if(order){
-    order.status=status;
-    save();
-    renderOrders();
-  }
-}
-
-function deleteOrder(id){
-  if(confirm("هل تريد حذف هذا الطلب؟")){
-    orders=orders.filter(o=>o.id!==id);
-    save();
-    renderOrders();
-    renderTracking();
-  }
-}
-
-function renderTracking(){
-  let list=document.getElementById("trackingList");
-
-  if(orders.length===0){
-    list.innerHTML='<div class="empty">لا توجد عمليات توصيل</div>';
-    return;
-  }
-
-  list.innerHTML=orders.map(o=>`
-    <div class="item">
-      <b>📍 ${o.customer}</b><br>
-      الطلب: ${o.product} × ${o.qty}<br>
-      الحالة:
-      <span class="badge">${o.status}</span>
-    </div>
-  `).join("");
-}
-
-renderStock();
-renderTrucks();
-renderOrders();
-renderTracking();
+renderProducts();
 updateStats();
 
 </script>
 
 </body>
-</html>
+  </html>
