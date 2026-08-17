@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LogiFlow V4</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LogiFlow V5</title>
 
 <style>
 *{box-sizing:border-box}
@@ -11,7 +11,7 @@
 body{
 margin:0;
 font-family:Arial,sans-serif;
-background:#f4f6f8;
+background:#f3f6f9;
 color:#222;
 }
 
@@ -19,10 +19,11 @@ header{
 background:#0d6efd;
 color:white;
 text-align:center;
-padding:20px;
+padding:22px 15px;
 }
 
-header h1{margin:0}
+header h1{margin:0;font-size:30px}
+header p{margin:7px 0 0}
 
 .container{
 max-width:1000px;
@@ -39,36 +40,41 @@ margin-bottom:15px;
 
 .stat{
 background:white;
-padding:15px;
+padding:14px 8px;
 text-align:center;
-border-radius:12px;
+border-radius:14px;
 box-shadow:0 2px 8px #ddd;
+}
+
+.stat span{
+font-size:25px;
 }
 
 .stat strong{
 display:block;
+font-size:23px;
 color:#0d6efd;
-font-size:24px;
 margin-top:5px;
 }
 
-.menu{
+.nav{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:8px;
 margin-bottom:15px;
 }
 
-.menu button{
+.nav button{
 background:white;
-padding:12px 5px;
+color:#222;
 border:0;
+padding:12px 5px;
 border-radius:10px;
-box-shadow:0 2px 7px #ddd;
 font-size:14px;
+box-shadow:0 2px 7px #ddd;
 }
 
-.menu button.active{
+.nav button.active{
 background:#0d6efd;
 color:white;
 }
@@ -86,8 +92,8 @@ display:block;
 }
 
 h2{
-color:#0d6efd;
 margin-top:0;
+color:#0d6efd;
 }
 
 input,select{
@@ -95,15 +101,17 @@ width:100%;
 padding:12px;
 margin:6px 0;
 border:1px solid #ddd;
-border-radius:8px;
+border-radius:9px;
 font-size:15px;
+background:white;
 }
 
 button{
 border:0;
-border-radius:8px;
-padding:10px 13px;
+border-radius:9px;
+padding:11px;
 font-size:14px;
+cursor:pointer;
 }
 
 .primary{
@@ -115,60 +123,15 @@ margin-top:8px;
 
 .item{
 background:#fafafa;
-border:1px solid #eee;
-border-radius:12px;
-padding:14px;
+border:1px solid #e5e5e5;
+border-radius:13px;
+padding:15px;
 margin-top:12px;
 }
 
-.item.low{
+.low{
 border:2px solid #dc3545;
 background:#fff5f5;
-}
-
-.actions{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:6px;
-margin-top:10px;
-}
-
-.in{
-background:#198754;
-color:white;
-}
-
-.out{
-background:#fd7e14;
-color:white;
-}
-
-.edit{
-background:#ffc107;
-}
-
-.delete{
-background:#dc3545;
-color:white;
-}
-
-.invoice{
-background:#6f42c1;
-color:white;
-}
-
-.whatsapp{
-background:#198754;
-color:white;
-}
-
-.badge{
-display:inline-block;
-padding:5px 9px;
-border-radius:20px;
-background:#e7f1ff;
-color:#0d6efd;
-margin-top:5px;
 }
 
 .warning{
@@ -177,16 +140,51 @@ font-weight:bold;
 margin-top:8px;
 }
 
-.status{
+.badge{
+display:inline-block;
+padding:5px 9px;
+border-radius:20px;
 background:#e7f1ff;
 color:#0d6efd;
-padding:5px 8px;
-border-radius:15px;
+margin:4px 0;
+}
+
+.actions{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:7px;
+margin-top:10px;
+}
+
+.green{background:#198754;color:white}
+.orange{background:#fd7e14;color:white}
+.yellow{background:#ffc107;color:#222}
+.red{background:#dc3545;color:white}
+.purple{background:#6f42c1;color:white}
+
+.status{
+display:inline-block;
+padding:6px 10px;
+border-radius:20px;
+background:#e7f1ff;
+color:#0d6efd;
+margin:5px 0;
 }
 
 .empty{
 text-align:center;
+padding:25px;
 color:#777;
+}
+
+.search{
+margin-top:12px;
+}
+
+.footer{
+text-align:center;
+color:#777;
+font-size:13px;
 padding:20px;
 }
 
@@ -196,8 +194,16 @@ padding:20px;
 grid-template-columns:1fr 1fr;
 }
 
-.menu{
+.nav{
 grid-template-columns:1fr 1fr;
+}
+
+}
+
+@media(min-width:701px){
+
+.actions{
+grid-template-columns:repeat(4,1fr);
 }
 
 }
@@ -208,51 +214,59 @@ grid-template-columns:1fr 1fr;
 
 <header>
 <h1>🚚 LogiFlow</h1>
-<p>نظام إدارة اللوجيستيك</p>
+<p>نظام إدارة اللوجيستيك والمخزون</p>
 </header>
 
 <div class="container">
 
+<!-- الإحصائيات -->
+
 <div class="stats">
 
 <div class="stat">
-📦 المنتجات
+<span>📦</span>
 <strong id="productCount">0</strong>
+منتج
 </div>
 
 <div class="stat">
-📊 الكمية
+<span>📊</span>
 <strong id="totalQty">0</strong>
+الكمية
 </div>
 
 <div class="stat">
-📋 الطلبات
+<span>📋</span>
 <strong id="orderCount">0</strong>
+طلب
 </div>
 
 <div class="stat">
-🚛 الشاحنات
+<span>🚛</span>
 <strong id="truckCount">0</strong>
+شاحنة
 </div>
 
 </div>
 
-<div class="menu">
 
-<button class="active"
-onclick="showSection('stock',this)">
+<!-- القائمة -->
+
+<div class="nav">
+
+<button class="active" onclick="openTab('stock',this)">
 📦 المخزون
 </button>
 
-<button onclick="showSection('orders',this)">
+<button onclick="openTab('orders',this)">
 📋 الطلبات
 </button>
 
-<button onclick="showSection('trucks',this)">
+<button onclick="openTab('transport',this)">
 🚛 النقل
 </button>
 
-<button onclick="showSection('tracking',this)">
+<button onclick="openTab('tracking',this)">
 📍 التتبع
 </button>
 
@@ -268,18 +282,26 @@ onclick="showSection('stock',this)">
 <input id="productName"
 placeholder="اسم المنتج">
 
+<input id="productCode"
+placeholder="كود المنتج (اختياري)">
+
 <input id="productQty"
 type="number"
-min="1"
+min="0"
 placeholder="الكمية">
 
-<button class="primary"
-onclick="addProduct()">
-➕ إضافة منتج
+<input id="minimumQty"
+type="number"
+min="0"
+placeholder="الحد الأدنى للمخزون">
+
+<button class="primary" onclick="addProduct()">
+➕ إضافة المنتج
 </button>
 
-<input id="productSearch"
-placeholder="🔎 البحث عن منتج"
+<input class="search"
+id="productSearch"
+placeholder="🔎 البحث عن منتج..."
 oninput="renderProducts()">
 
 <div id="productList"></div>
@@ -294,26 +316,29 @@ oninput="renderProducts()">
 <h2>📋 إدارة الطلبات</h2>
 
 <input id="customerName"
-placeholder="اسم الزبون">
+placeholder="👤 اسم الزبون">
 
 <input id="customerPhone"
-placeholder="رقم الهاتف">
+placeholder="📞 رقم الهاتف">
 
 <input id="orderProduct"
-placeholder="اسم المنتج">
+placeholder="📦 اسم المنتج">
 
 <input id="orderQty"
 type="number"
 min="1"
-placeholder="الكمية">
+placeholder="🔢 الكمية">
 
-<button class="primary"
-onclick="addOrder()">
+<input id="orderAddress"
+placeholder="📍 عنوان التوصيل">
+
+<button class="primary" onclick="addOrder()">
 ➕ إنشاء طلب
 </button>
 
-<input id="orderSearch"
-placeholder="🔎 البحث عن طلب"
+<input class="search"
+id="orderSearch"
+placeholder="🔎 البحث عن طلب..."
 oninput="renderOrders()">
 
 <div id="orderList"></div>
@@ -323,18 +348,20 @@ oninput="renderOrders()">
 
 <!-- النقل -->
 
-<div id="trucks" class="section">
+<div id="transport" class="section">
 
 <h2>🚛 إدارة النقل</h2>
 
 <input id="truckNumber"
-placeholder="رقم الشاحنة">
+placeholder="🚛 رقم الشاحنة">
 
 <input id="driverName"
-placeholder="اسم السائق">
+placeholder="👤 اسم السائق">
 
-<button class="primary"
-onclick="addTruck()">
+<input id="truckType"
+placeholder="نوع الشاحنة">
+
+<button class="primary" onclick="addTruck()">
 ➕ إضافة شاحنة
 </button>
 
@@ -356,17 +383,33 @@ onclick="addTruck()">
 </div>
 
 
+<div class="footer">
+LogiFlow V5 — إدارة اللوجيستيك
+</div>
+
+
 <script>
 
-let products =
-JSON.parse(localStorage.getItem("logiflow_products") || "[]");
+/* =========================
+   البيانات
+========================= */
 
-let orders =
-JSON.parse(localStorage.getItem("logiflow_orders") || "[]");
+let products=JSON.parse(
+localStorage.getItem("logiflow_products")||"[]"
+);
 
-let trucks =
-JSON.parse(localStorage.getItem("logiflow_trucks") || "[]");
+let orders=JSON.parse(
+localStorage.getItem("logiflow_orders")||"[]"
+);
 
+let trucks=JSON.parse(
+localStorage.getItem("logiflow_trucks")||"[]"
+);
+
+
+/* =========================
+   الحفظ
+========================= */
 
 function saveAll(){
 
@@ -390,83 +433,104 @@ updateStats();
 }
 
 
+/* =========================
+   الإحصائيات
+========================= */
+
 function updateStats(){
 
-document.getElementById("productCount").textContent =
+document.getElementById("productCount").textContent=
 products.length;
 
-document.getElementById("totalQty").textContent =
-products.reduce((sum,p)=>sum+Number(p.qty),0);
+document.getElementById("totalQty").textContent=
+products.reduce(
+(total,p)=>total+Number(p.qty||0),0
+);
 
-document.getElementById("orderCount").textContent =
+document.getElementById("orderCount").textContent=
 orders.length;
 
-document.getElementById("truckCount").textContent =
+document.getElementById("truckCount").textContent=
 trucks.length;
 
 }
 
 
-function showSection(id,button){
+/* =========================
+   التنقل
+========================= */
+
+function openTab(id,button){
 
 document.querySelectorAll(".section")
-.forEach(s=>s.classList.remove("active"));
+.forEach(x=>x.classList.remove("active"));
 
-document.querySelectorAll(".menu button")
-.forEach(b=>b.classList.remove("active"));
+document.querySelectorAll(".nav button")
+.forEach(x=>x.classList.remove("active"));
 
 document.getElementById(id)
 .classList.add("active");
 
 button.classList.add("active");
 
-if(id==="stock") renderProducts();
-
-if(id==="orders") renderOrders();
-
-if(id==="trucks") renderTrucks();
-
-if(id==="tracking") renderTracking();
+if(id==="stock")renderProducts();
+if(id==="orders")renderOrders();
+if(id==="transport")renderTrucks();
+if(id==="tracking")renderTracking();
 
 }
 
 
-/* المنتجات */
+/* =========================
+   إضافة منتج
+========================= */
 
 function addProduct(){
 
-let name =
-document.getElementById("productName").value.trim();
+let name=document
+.getElementById("productName")
+.value.trim();
 
-let qty =
-Number(document.getElementById("productQty").value);
+let code=document
+.getElementById("productCode")
+.value.trim();
 
-if(!name || qty<=0){
+let qty=Number(document
+.getElementById("productQty")
+.value);
+
+let minimum=Number(document
+.getElementById("minimumQty")
+.value)||10;
+
+if(!name||qty<0){
 
 alert("دخل اسم المنتج والكمية");
 
 return;
-
 }
 
 products.push({
 
 id:Date.now(),
 
-code:"P-"+Date.now().toString().slice(-6),
-
 name:name,
 
-qty:qty
+code:code||
+"P-"+Date.now().toString().slice(-6),
+
+qty:qty,
+
+minimum:minimum
 
 });
 
 document.getElementById("productName").value="";
-
+document.getElementById("productCode").value="";
 document.getElementById("productQty").value="";
+document.getElementById("minimumQty").value="";
 
 saveAll();
-
 renderProducts();
 
 alert("تمت إضافة المنتج ✅");
@@ -474,72 +538,81 @@ alert("تمت إضافة المنتج ✅");
 }
 
 
+/* =========================
+   عرض المنتجات
+========================= */
+
 function renderProducts(){
 
-let list =
-document.getElementById("productList");
+let list=document.getElementById("productList");
 
-let search =
-(document.getElementById("productSearch").value || "")
+let search=(document
+.getElementById("productSearch")
+.value||"")
 .toLowerCase();
 
-let filtered =
-products.filter(p =>
-p.name.toLowerCase().includes(search)
+let filtered=products.filter(p=>
+p.name.toLowerCase().includes(search)||
+p.code.toLowerCase().includes(search)
 );
 
 if(filtered.length===0){
 
-list.innerHTML =
+list.innerHTML=
 '<div class="empty">لا توجد منتجات</div>';
 
 return;
-
 }
 
-list.innerHTML =
-filtered.map(p=>{
+list.innerHTML=filtered.map(p=>{
 
-let low = Number(p.qty)<10;
+let low=Number(p.qty)<=Number(p.minimum||10);
 
-return `
+return`
 
 <div class="item ${low?"low":""}">
 
-<b>📦 ${p.name}</b>
+<b>📦 ${escapeHTML(p.name)}</b>
 
 <br>
 
 الكود:
-<span class="badge">${p.code}</span>
+<span class="badge">
+${escapeHTML(p.code)}
+</span>
 
 <br>
 
 الكمية الحالية:
 <strong>${p.qty}</strong>
 
-${low ?
-'<div class="warning">⚠️ المخزون منخفض</div>'
-:""}
+<br>
+
+الحد الأدنى:
+${p.minimum||10}
+
+${low?
+'<div class="warning">⚠️ المخزون منخفض</div>':
+""}
 
 <div class="actions">
 
-<button class="in"
+<button class="green"
 onclick="stockIn(${p.id})">
 ➕ دخول
 </button>
 
-<button class="out"
+<button class="orange"
 onclick="stockOut(${p.id})">
 ➖ خروج
 </button>
 
-<button class="edit"
+<button class="yellow"
 onclick="editProduct(${p.id})">
 ✏️ تعديل
 </button>
 
-<button class="delete"
+<button class="red"
 onclick="deleteProduct(${p.id})">
 🗑️ حذف
 </button>
@@ -555,15 +628,21 @@ onclick="deleteProduct(${p.id})">
 }
 
 
+/* =========================
+   دخول المخزون
+========================= */
+
 function stockIn(id){
 
 let p=products.find(x=>x.id===id);
+
+if(!p)return;
 
 let amount=Number(
 prompt("شحال من وحدة دخلات؟")
 );
 
-if(!amount || amount<=0)return;
+if(!amount||amount<=0)return;
 
 p.qty+=amount;
 
@@ -573,22 +652,27 @@ renderProducts();
 }
 
 
+/* =========================
+   خروج المخزون
+========================= */
+
 function stockOut(id){
 
 let p=products.find(x=>x.id===id);
+
+if(!p)return;
 
 let amount=Number(
 prompt("شحال من وحدة خرجات؟")
 );
 
-if(!amount || amount<=0)return;
+if(!amount||amount<=0)return;
 
 if(amount>p.qty){
 
-alert("❌ الكمية غير كافية");
+alert("❌ الكمية الموجودة غير كافية");
 
 return;
-
 }
 
 p.qty-=amount;
@@ -599,16 +683,22 @@ renderProducts();
 }
 
 
+/* =========================
+   تعديل المنتج
+========================= */
+
 function editProduct(id){
 
 let p=products.find(x=>x.id===id);
+
+if(!p)return;
 
 let name=prompt(
 "اسم المنتج:",
 p.name
 );
 
-if(name===null)return;
+if(name===null||!name.trim())return;
 
 let qty=Number(
 prompt("الكمية:",p.qty)
@@ -619,24 +709,35 @@ if(isNaN(qty)||qty<0){
 alert("الكمية غير صحيحة");
 
 return;
-
 }
+
+let minimum=Number(
+prompt("الحد الأدنى:",p.minimum||10)
+);
 
 p.name=name.trim();
 p.qty=qty;
+p.minimum=isNaN(minimum)?10:minimum;
 
 saveAll();
 renderProducts();
 
 }
 
+
+/* =========================
+   حذف المنتج
+========================= */
 
 function deleteProduct(id){
 
-if(!confirm("واش متأكد بغيتي تحذف المنتج؟"))
-return;
+if(!confirm(
+"واش متأكد بغيتي تحذف هاد المنتج؟"
+))return;
 
-products=products.filter(p=>p.id!==id);
+products=products.filter(
+p=>p.id!==id
+);
 
 saveAll();
 renderProducts();
@@ -644,28 +745,37 @@ renderProducts();
 }
 
 
-/* الطلبات */
+/* =========================
+   إضافة طلب
+========================= */
 
 function addOrder(){
 
-let customer =
-document.getElementById("customerName").value.trim();
+let customer=document
+.getElementById("customerName")
+.value.trim();
 
-let phone =
-document.getElementById("customerPhone").value.trim();
+let phone=document
+.getElementById("customerPhone")
+.value.trim();
 
-let product =
-document.getElementById("orderProduct").value.trim();
+let product=document
+.getElementById("orderProduct")
+.value.trim();
 
-let qty =
-Number(document.getElementById("orderQty").value);
+let qty=Number(document
+.getElementById("orderQty")
+.value);
 
-if(!customer || !product || qty<=0){
+let address=document
+.getElementById("orderAddress")
+.value.trim();
+
+if(!customer||!product||qty<=0){
 
 alert("دخل معلومات الطلب كاملة");
 
 return;
-
 }
 
 orders.push({
@@ -683,13 +793,15 @@ product:product,
 
 qty:qty,
 
+address:address,
+
 status:"جديد",
 
 truck:"",
 
-driver:"",
+date:new Date().toLocaleDateString("ar-MA"),
 
-date:new Date().toLocaleDateString("ar-MA")
+time:new Date().toLocaleTimeString("ar-MA")
 
 });
 
@@ -697,6 +809,7 @@ document.getElementById("customerName").value="";
 document.getElementById("customerPhone").value="";
 document.getElementById("orderProduct").value="";
 document.getElementById("orderQty").value="";
+document.getElementById("orderAddress").value="";
 
 saveAll();
 renderOrders();
@@ -706,17 +819,22 @@ alert("تم إنشاء الطلب ✅");
 }
 
 
+/* =========================
+   عرض الطلبات
+========================= */
+
 function renderOrders(){
 
 let list=document.getElementById("orderList");
 
-let search=
-(document.getElementById("orderSearch").value||"")
+let search=(document
+.getElementById("orderSearch")
+.value||"")
 .toLowerCase();
 
 let filtered=orders.filter(o=>
-o.number.toLowerCase().includes(search) ||
-o.customer.toLowerCase().includes(search) ||
+o.number.toLowerCase().includes(search)||
+o.customer.toLowerCase().includes(search)||
 o.product.toLowerCase().includes(search)
 );
 
@@ -726,35 +844,49 @@ list.innerHTML=
 '<div class="empty">لا توجد طلبات</div>';
 
 return;
-
 }
 
 list.innerHTML=filtered.map(o=>`
 
 <div class="item">
 
-<b>📋 ${o.number}</b>
+<b>📋 ${escapeHTML(o.number)}</b>
+
+<br><br>
+
+👤 الزبون:
+<strong>${escapeHTML(o.customer)}</strong>
 
 <br>
-👤 الزبون: ${o.customer}
+
+📞 الهاتف:
+${escapeHTML(o.phone||"غير محدد")}
 
 <br>
-📞 الهاتف: ${o.phone||"غير محدد"}
+
+📦 المنتج:
+${escapeHTML(o.product)}
 
 <br>
-📦 المنتج: ${o.product}
+
+🔢 الكمية:
+<strong>${o.qty}</strong>
 
 <br>
-الكمية: <strong>${o.qty}</strong>
+
+📍 العنوان:
+${escapeHTML(o.address||"غير محدد")}
 
 <br>
-📅 التاريخ: ${o.date}
 
-<br>
+📅 التاريخ:
+${o.date}
+
+<br><br>
 
 الحالة:
 
-<select onchange="changeOrderStatus(${o.id},this.value)">
+<select onchange="changeStatus(${o.id},this.value)">
 
 <option ${o.status==="جديد"?"selected":""}>
 جديد
@@ -770,6 +902,10 @@ list.innerHTML=filtered.map(o=>`
 
 <option ${o.status==="تم التسليم"?"selected":""}>
 تم التسليم
+</option>
+
+<option ${o.status==="ملغى"?"selected":""}>
+ملغى
 </option>
 
 </select>
@@ -789,7 +925,9 @@ ${trucks.map(t=>`
 <option value="${t.id}"
 ${String(o.truck)===String(t.id)?"selected":""}>
 
-${t.number} - ${t.driver}
+${escapeHTML(t.number)}
+-
+${escapeHTML(t.driver)}
 
 </option>
 
@@ -799,22 +937,22 @@ ${t.number} - ${t.driver}
 
 <div class="actions">
 
-<button class="invoice"
+<button class="purple"
 onclick="printInvoice(${o.id})">
 🧾 فاتورة
 </button>
 
-<button class="whatsapp"
+<button class="green"
 onclick="sendWhatsApp(${o.id})">
 📲 WhatsApp
 </button>
 
-<button class="edit"
+<button class="yellow"
 onclick="editOrder(${o.id})">
 ✏️ تعديل
 </button>
 
-<button class="delete"
+<button class="red"
 onclick="deleteOrder(${o.id})">
 🗑️ حذف
 </button>
@@ -828,7 +966,11 @@ onclick="deleteOrder(${o.id})">
 }
 
 
-function changeOrderStatus(id,status){
+/* =========================
+   تغيير حالة الطلب
+========================= */
+
+function changeStatus(id,status){
 
 let o=orders.find(x=>x.id===id);
 
@@ -844,6 +986,10 @@ renderTracking();
 }
 
 
+/* =========================
+   ربط الشاحنة
+========================= */
+
 function assignTruck(id,truckId){
 
 let o=orders.find(x=>x.id===id);
@@ -852,12 +998,6 @@ if(!o)return;
 
 o.truck=truckId;
 
-let t=trucks.find(
-x=>String(x.id)===String(truckId)
-);
-
-o.driver=t?t.driver:"";
-
 saveAll();
 
 renderOrders();
@@ -865,6 +1005,10 @@ renderTracking();
 
 }
 
+
+/* =========================
+   تعديل الطلب
+========================= */
 
 function editOrder(id){
 
@@ -897,12 +1041,11 @@ let qty=Number(
 prompt("الكمية:",o.qty)
 );
 
-if(isNaN(qty)||qty<=0){
+if(!qty||qty<=0){
 
 alert("الكمية غير صحيحة");
 
 return;
-
 }
 
 o.customer=customer;
@@ -916,12 +1059,19 @@ renderOrders();
 }
 
 
+/* =========================
+   حذف الطلب
+========================= */
+
 function deleteOrder(id){
 
-if(!confirm("واش متأكد بغيتي تحذف الطلب؟"))
-return;
+if(!confirm(
+"واش متأكد بغيتي تحذف هاد الطلب؟"
+))return;
 
-orders=orders.filter(o=>o.id!==id);
+orders=orders.filter(
+o=>o.id!==id
+);
 
 saveAll();
 
@@ -931,16 +1081,22 @@ renderTracking();
 }
 
 
-/* الشاحنات */
+/* =========================
+   الشاحنات
+========================= */
 
 function addTruck(){
 
-let number=
-document.getElementById("truckNumber")
+let number=document
+.getElementById("truckNumber")
 .value.trim();
 
-let driver=
-document.getElementById("driverName")
+let driver=document
+.getElementById("driverName")
+.value.trim();
+
+let type=document
+.getElementById("truckType")
 .value.trim();
 
 if(!number||!driver){
@@ -948,7 +1104,6 @@ if(!number||!driver){
 alert("دخل رقم الشاحنة واسم السائق");
 
 return;
-
 }
 
 trucks.push({
@@ -957,21 +1112,27 @@ id:Date.now(),
 
 number:number,
 
-driver:driver
+driver:driver,
+
+type:type
 
 });
 
 document.getElementById("truckNumber").value="";
 document.getElementById("driverName").value="";
+document.getElementById("truckType").value="";
 
 saveAll();
-
 renderTrucks();
 
 alert("تمت إضافة الشاحنة ✅");
 
 }
 
+
+/* =========================
+   عرض الشاحنات
+========================= */
 
 function renderTrucks(){
 
@@ -983,27 +1144,32 @@ list.innerHTML=
 '<div class="empty">لا توجد شاحنات</div>';
 
 return;
-
 }
 
 list.innerHTML=trucks.map(t=>`
 
 <div class="item">
 
-<b>🚛 ${t.number}</b>
+<b>🚛 ${escapeHTML(t.number)}</b>
 
 <br>
 
-👤 السائق: ${t.driver}
+👤 السائق:
+${escapeHTML(t.driver)}
+
+<br>
+
+🚚 النوع:
+${escapeHTML(t.type||"غير محدد")}
 
 <div class="actions">
 
-<button class="edit"
+<button class="yellow"
 onclick="editTruck(${t.id})">
 ✏️ تعديل
 </button>
 
-<button class="delete"
+<button class="red"
 onclick="deleteTruck(${t.id})">
 🗑️ حذف
 </button>
@@ -1016,6 +1182,10 @@ onclick="deleteTruck(${t.id})">
 
 }
 
+
+/* =========================
+   تعديل الشاحنة
+========================= */
 
 function editTruck(id){
 
@@ -1037,8 +1207,16 @@ t.driver
 
 if(driver===null)return;
 
+let type=prompt(
+"نوع الشاحنة:",
+t.type
+);
+
+if(type===null)return;
+
 t.number=number;
 t.driver=driver;
+t.type=type;
 
 saveAll();
 
@@ -1048,19 +1226,25 @@ renderOrders();
 }
 
 
+/* =========================
+   حذف الشاحنة
+========================= */
+
 function deleteTruck(id){
 
-if(!confirm("واش متأكد بغيتي تحذف الشاحنة؟"))
-return;
+if(!confirm(
+"واش متأكد بغيتي تحذف هاد الشاحنة؟"
+))return;
 
-trucks=trucks.filter(t=>t.id!==id);
+trucks=trucks.filter(
+t=>t.id!==id
+);
 
 orders.forEach(o=>{
 
 if(String(o.truck)===String(id)){
 
 o.truck="";
-o.driver="";
 
 }
 
@@ -1070,16 +1254,19 @@ saveAll();
 
 renderTrucks();
 renderOrders();
+renderTracking();
 
 }
 
 
-/* التتبع */
+/* =========================
+   التتبع
+========================= */
 
 function renderTracking(){
 
-let list=
-document.getElementById("trackingList");
+let list=document
+.getElementById("trackingList");
 
 if(orders.length===0){
 
@@ -1087,41 +1274,48 @@ list.innerHTML=
 '<div class="empty">لا توجد طلبات للتتبع</div>';
 
 return;
-
 }
 
 list.innerHTML=orders.map(o=>{
 
-let t=trucks.find(
-x=>String(x.id)===String(o.truck)
+let truck=trucks.find(
+t=>String(t.id)===String(o.truck)
 );
 
-return `
+return`
 
 <div class="item">
 
-<b>📍 ${o.number}</b>
+<b>📍 ${escapeHTML(o.number)}</b>
+
+<br><br>
+
+👤 ${escapeHTML(o.customer)}
 
 <br>
 
-👤 ${o.customer}
+📦 ${escapeHTML(o.product)}
+×
+${o.qty}
 
 <br>
 
-📦 ${o.product} × ${o.qty}
+📅 ${o.date}
 
 <br>
 
 الحالة:
 
 <span class="status">
-${o.status}
+${escapeHTML(o.status)}
 </span>
 
 <br>
 
-🚛 ${t?
-t.number+" - "+t.driver:
+🚛
+${truck?
+escapeHTML(truck.number)+" - "+
+escapeHTML(truck.driver):
 "لم يتم تعيين شاحنة"}
 
 </div>
@@ -1133,7 +1327,9 @@ t.number+" - "+t.driver:
 }
 
 
-/* الفاتورة */
+/* =========================
+   الفاتورة
+========================= */
 
 function printInvoice(id){
 
@@ -1141,8 +1337,8 @@ let o=orders.find(x=>x.id===id);
 
 if(!o)return;
 
-let t=trucks.find(
-x=>String(x.id)===String(o.truck)
+let truck=trucks.find(
+t=>String(t.id)===String(o.truck)
 );
 
 let invoice=`
@@ -1155,30 +1351,35 @@ let invoice=`
 
 <meta charset="UTF-8">
 
-<title>فاتورة ${o.number}</title>
+<title>${o.number}</title>
 
 <style>
 
 body{
 font-family:Arial;
-padding:30px;
-direction:rtl;
+padding:25px;
+background:#fff;
 }
 
-.box{
-border:1px solid #ddd;
-padding:20px;
-max-width:600px;
+.invoice{
+max-width:650px;
 margin:auto;
+border:1px solid #ddd;
+padding:25px;
 }
 
-h1{
+h1,h2{
 text-align:center;
 }
 
 .row{
-padding:10px;
+padding:12px;
 border-bottom:1px solid #eee;
+}
+
+.footer{
+text-align:center;
+margin-top:25px;
 }
 
 </style>
@@ -1187,51 +1388,63 @@ border-bottom:1px solid #eee;
 
 <body>
 
-<div class="box">
+<div class="invoice">
 
 <h1>🚚 LogiFlow</h1>
 
 <h2>🧾 تفاصيل الطلب</h2>
 
 <div class="row">
-رقم الطلب: ${o.number}
+<strong>رقم الطلب:</strong>
+${o.number}
 </div>
 
 <div class="row">
-التاريخ: ${o.date}
+<strong>التاريخ:</strong>
+${o.date}
 </div>
 
 <div class="row">
-الزبون: ${o.customer}
+<strong>الزبون:</strong>
+${escapeHTML(o.customer)}
 </div>
 
 <div class="row">
-الهاتف: ${o.phone||"غير محدد"}
+<strong>الهاتف:</strong>
+${escapeHTML(o.phone||"غير محدد")}
 </div>
 
 <div class="row">
-المنتج: ${o.product}
+<strong>المنتج:</strong>
+${escapeHTML(o.product)}
 </div>
 
 <div class="row">
-الكمية: ${o.qty}
+<strong>الكمية:</strong>
+${o.qty}
 </div>
 
 <div class="row">
-الحالة: ${o.status}
+<strong>العنوان:</strong>
+${escapeHTML(o.address||"غير محدد")}
 </div>
 
 <div class="row">
-الشاحنة: ${t?
-t.number+" - "+t.driver:
+<strong>الحالة:</strong>
+${escapeHTML(o.status)}
+</div>
+
+<div class="row">
+<strong>الشاحنة:</strong>
+${truck?
+escapeHTML(truck.number)+" - "+
+escapeHTML(truck.driver):
 "غير محددة"}
 </div>
 
-<br>
-
-<p style="text-align:center">
-شكراً لاستخدام LogiFlow
-</p>
+<div class="footer">
+شكراً لاستخدام LogiFlow 🚚
+</div>
 
 </div>
 
@@ -1256,21 +1469,21 @@ let win=window.open(
 if(!win){
 
 alert(
-"المتصفح منع نافذة الفاتورة. اسمح بالنوافذ المنبثقة."
+"خاصك تسمح بالنوافذ المنبثقة باش تفتح الفاتورة."
 );
 
 return;
-
 }
 
 win.document.write(invoice);
-
 win.document.close();
 
 }
 
 
-/* WhatsApp */
+/* =========================
+   WhatsApp
+========================= */
 
 function sendWhatsApp(id){
 
@@ -1278,44 +1491,54 @@ let o=orders.find(x=>x.id===id);
 
 if(!o)return;
 
-let message=
-
-"🚚 *LogiFlow - تفاصيل الطلب*%0A%0A"+
-"📋 رقم الطلب: "+o.number+"%0A"+
-"👤 الزبون: "+o.customer+"%0A"+
-"📦 المنتج: "+o.product+"%0A"+
-"🔢 الكمية: "+o.qty+"%0A"+
-"📍 الحالة: "+o.status+"%0A"+
+let text=
+"🚚 LogiFlow - تفاصيل الطلب\n\n"+
+"📋 رقم الطلب: "+o.number+"\n"+
+"👤 الزبون: "+o.customer+"\n"+
+"📦 المنتج: "+o.product+"\n"+
+"🔢 الكمية: "+o.qty+"\n"+
+"📍 العنوان: "+(o.address||"غير محدد")+"\n"+
+"📌 الحالة: "+o.status+"\n"+
 "📅 التاريخ: "+o.date;
 
-if(o.phone){
-
-let phone=o.phone
+let phone=(o.phone||"")
 .replace(/\D/g,"");
 
 if(phone.startsWith("0")){
 phone="212"+phone.substring(1);
 }
 
-window.open(
+let url=phone?
 "https://wa.me/"+phone+
-"?text="+message,
-"_blank"
-);
+"?text="+encodeURIComponent(text):
 
-}else{
+"https://wa.me/?text="+
+encodeURIComponent(text);
 
-window.open(
-"https://wa.me/?text="+message,
-"_blank"
-);
-
-}
+window.open(url,"_blank");
 
 }
 
 
-/* تشغيل */
+/* =========================
+   حماية النص
+========================= */
+
+function escapeHTML(value){
+
+return String(value||"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   تشغيل التطبيق
+========================= */
 
 renderProducts();
 renderOrders();
@@ -1323,7 +1546,4 @@ renderTrucks();
 renderTracking();
 updateStats();
 
-</script>
-
-</body>
-</html>
+<
